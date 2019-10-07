@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: path.join(__dirname, 'src', 'index.js' ),
+  entry: path.join(__dirname, 'src', 'index.jsx' ),
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'index.bundle.js'
@@ -11,7 +11,7 @@ module.exports = {
   module: {
     rules: [
       { 
-        test: /\.(js)$/,
+        test: /\.(js|jsx)$/,
         use: 'babel-loader'
       },
       {
@@ -19,8 +19,11 @@ module.exports = {
         use: [
           'style-loader',
           'css-loader',
-          'sass-loader'
         ]
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: ['file-loader']
       }
     ]
   },
@@ -28,5 +31,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join('src', 'index.html')
     })
-  ]
+  ],
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    historyApiFallback: true,
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.png', '.jpg', '.svg', '.ico'],
+  },
 }
